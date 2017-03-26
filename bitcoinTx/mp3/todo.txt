@@ -1,0 +1,2 @@
+1. re-generate transaction.txt
+2. design test cases for clustering

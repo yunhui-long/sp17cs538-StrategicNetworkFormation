@@ -1,0 +1,337 @@
+%%%%%%%%%%%%%%%%
+% Set options
+
+\newcommand{\settitle}{Project 3: Bitcoin}
+\newcommand{\course}{CS463}
+\newcommand{\coursename}{Computer Security II}
+\newcommand{\duedateOne}{March 29, 2016}
+\newcommand{\duedateTwo}{April 7, 2016}
+\newcommand{\distdate}{March 15, 2016}
+\newcommand{\duetime}{11:59pm CST}
+
+%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,12pt]{report}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{fullpage}
+\usepackage[protrusion=true,expansion=auto]{microtype}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathptmx}
+\usepackage{textcomp}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{paralist}
+\usepackage{url}
+\usepackage[
+  breaklinks=true,colorlinks=true,linkcolor=black,%
+  citecolor=black,urlcolor=black,bookmarks=false,bookmarksopen=false,%
+  pdfauthor={\course},%
+  pdftitle={\settitle},%
+  pdftex]{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{multicol}
+\def\textsb#1{{\fontseries{sb}\selectfont #1}}
+\usepackage{mdframed}
+\usepackage{verbatim}
+\setcounter{secnumdepth}{3}
+
+
+\newcommand{\problemsetdone}{\bigskip\hfill$\Box{}$}
+
+\newcommand{\htitle}
+{
+     \noindent\parbox{\textwidth}
+    {
+        \course\hfill \distdate\newline
+        \coursename\hfill 
+        \settitle \vspace*{-.5ex}\newline
+        \mbox{}\hrulefill\mbox{}
+    }
+    \vspace{8pt}
+    \begin{center}{\Large\bf{\settitle}}\end{center}
+}
+\newcommand{\handout}
+{
+    \thispagestyle{empty}
+    \markboth{}{}
+    \pagestyle{plain}
+    \htitle
+}
+
+\newcommand{\problemsetheader}
+{
+\setlength{\parindent}{0pt}
+
+\medskip
+
+This project is due on \textbf{\duedateTwo} at \textbf{\duetime}. We strongly recommend that you get started early. You will get 80\% of your total points if you turn in up to 72 hours after the due date. Late work will not be accepted after 72 hours past the due date.
+
+\medskip
+
+The project is split into two parts. Checkpoint 1 helps you to get familiar with the language and tools you will be using for this project. The recommended deadline for checkpoint 1 is \textbf{\duedateOne}. We strongly recommend that you finish the first checkpoint before the recommended deadline. However, you do NOT need to make a separate submission for checkpoint 1. That is, you need to submit your answers for both checkpoints in a single folder before the project due date on \textbf{\duedateTwo} at \textbf{\duetime}. Detailed submission requirements are listed at the end of the document.
+
+\medskip
+
+This is a group project; you SHOULD work in a group of {\bf 2 or 3 students}. 
+
+\medskip
+
+The code and other answers you submit must be entirely your own work, and you are bound
+by the Student Code. You MAY consult with other students about the conceptualization of the
+project and the meaning of the questions, but you MUST NOT look at any part of someone else's
+solution or collaborate with anyone else. You may consult published references,
+provided that you appropriately cite them (e.g., with program comments), as you would in an
+academic paper.
+
+\medskip
+
+Solutions MUST be submitted electronically in your svn directory,
+following the submission checklist given at the end of each checkpoint. Details on the filename and
+submission guideline is listed at the end of the document. 
+
+\medskip
+
+ONE submission per group is sufficient. 
+
+\medskip
+
+{\noindent \textbf{Release date:} \distdate }
+
+{\noindent \textbf{Checkpoint 1 Recommended Due date:} \duedateOne}
+
+{\noindent \textbf{Checkpoint 2 Due date:} {\duedateTwo} at \duetime}
+
+\medskip
+
+{\noindent \textbf{Course Website:} \url{https://wiki.cites.illinois.edu/wiki/display/cs463sp16}\\}
+{\noindent \textbf{Course SVN:} \url{https://subversion.ews.illinois.edu/svn/sp16-cs463}}
+
+\medskip
+
+\hrulefill
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\handout
+%\setlength{\parindent}{0pt}
+
+\problemsetheader
+
+%\medskip
+%\emph{``History has taught us: never underestimate the amount of money, time, and effort someone will expend to thwart a security system.''}
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-- Bruce Schneier 
+\pagebreak
+\section*{Introduction}
+
+Bitcoin has become an increasingly popular cryptocurrency in recent years. In Bitcoin, all user transactions are kept in a public ledger, and users are only identified by cryptographic public keys. This provides some levels of anonymity. In this machine problem, you will study the Bitcoin blockchain structure, and query blockchain data with online Bitcoin developer APIs. You will also study the level of anonymity in a Bitcoin system, and demonstrate that it is possible to link multiple Bitcoin addresses to the same user, and infer some users' identities. 
+
+\medskip
+
+\textbf{\centering\emph{Please read the assignment carefully before starting the implementing.}}
+
+\subsection*{Objectives}
+\begin{itemize}
+\item Understand the Bitcoin blockchain structure. 
+\item Be able to analyze Bitcoin blockchain data and get reasonable information.  
+\item Gain familiarity with Bitcoin APIs in Java.
+\end{itemize}
+\subsection*{Checkpoints}
+
+This machine problem is split into 2 checkpoints. Checkpoint 1 would help you get familiar with the Bitcoin developer APIs provided at Blockchain.info. You will need to answer a few questions by querying a block of transactions with the provided APIs. In Checkpoint 2, you will implement an algorithm to cluster Bitcoin addresses that are likely to belong to the same user, generate a user graph of transactions within a single day, and answer some questions based on the user graph.  
+
+
+\subsection*{Implementations}
+
+To help you with the implementation, you are provided with a code skeleton which prototypes the main classes and includes some useful methods. You are free to modify the provided code as long as the main classes in \texttt{test} package are preserved.
+
+%Set counter for MP number
+\setcounter{chapter}{3}
+
+\section{Checkpoint 1 (20 points)}
+\label{sec:checkpoint_1}
+This machine problem is split into 2 checkpoints. Checkpoint 1 would help you get familiar with the Bitcoin API. You will need to complete the implementation for \texttt{Checkpoint1.java}, query the Bitcoin block chain with the provided APIs, and answer a few questions. \texttt{Checkpoint1Test.java} will write your answers into a file named \texttt{cp1.txt}. Please DO NOT modify \texttt{Checkpoint1Test.java}.
+
+\smallskip
+
+\subsection{Block Info API}
+BlockInfo (\url{https://blockchain.info/}) is a Bitcoin block explorer website that provides information about Bitcoin blocks, transactions, and addresses. It also provides Java API for querying this information. You can find the source code and documentation for these APIs on GitHub (\url{https://github.com/blockchain/api-v1-client-java}). The Java library (\texttt{api-1.1.0.jar}) is included in the provided code skeleton.
+
+\subsection{Blocks (10 points)}  \label{subsec:Blocks} 
+In Bitcoin, transactions are stored in files called blocks. Each block contains a list of transactions and a block header. 
+
+Get the block with hash "000000000000000f5795bfe1de0381a44d4d5ea2ad81c21d77f275bffa03e8b3", and answer the following questions:
+\begin{enumerate}
+	\item What is the size of this block? 
+	\item What is the Hash of the previous block? 
+	\item How many transactions are included in this block? 
+\end{enumerate}
+
+\paragraph{Tips:}
+\begin{itemize}
+	\item Complete the implementation of the constructor in \texttt{Checkpoint1.java}. Use the method \texttt{getBlock(String hash)} in \texttt{BlockExplorere.java} to get a \texttt{Block} object in the block chain with the corresponding hash. 
+	\item Complete the implementation of \texttt{getBlockSize()} in \texttt{Checkpoint1.java}. Use the method \texttt{getSize()} in \texttt{Block.java}.
+	\item Complete the implementation of \texttt{getPrevHash()} in \texttt{Checkpoint1.java}. Use the method \texttt{getPreviousBlockHash()} in \texttt{Block.java}.
+	\item Complete the implementation of \texttt{getTxCount()} in \texttt{Checkpoint1.java}. Use the method \texttt{getTransactions()} in \texttt{Block.java}.
+\end{itemize}
+
+\paragraph{What to submit} Submit together with \ref{subsec: transactions}.
+
+\subsection{Transactions (10 points)} \label{subsec: transactions}
+In Bitcoin, each transaction has a list of inputs and a list of outputs. In a normal transaction, an input is a reference to an output from a previous transaction. It contains a hash of the previous transaction and an index indicating the specific output of that transaction. An output contains a value and a Bitcoin address. The value shows the number of Satoshi (1 BTC = 100,000,000 Satoshi) to be transferred, and the Bitcoin address shows who should receive the transferred Bitcoins. A generation transaction (i.e. coinbase transaction) refers to a transaction that generates new Bitcoins. A generation transaction has a single input. The input has a "coinbase" parameter, and has no previous outputs.
+
+Get all the transactions in the Bitcoin block in \ref{subsec:Blocks}, and answer the following questions:
+\begin{enumerate}
+	\item Find the transaction with the most outputs (if there are several transactions with the same number of outputs, choose the first transaction), and list the Bitcoin addresses of all the outputs. 
+	\item Find the transaction with the most inputs (if there are several transactions with the same number of inputs, choose the first transaction), and list the Bitcoin addresses of the previous outputs linked with these inputs.  
+	\item Which Bitcoin address has received the largest amount of Satoshi in a single transaction? 
+	\item How many coinbase transactions are there in this block? 
+	\item What is the number of Satoshi generated in this block? 
+\end{enumerate}
+
+\paragraph{Tips:}
+\begin{itemize}
+	\item In \texttt{Transaction.java}, the method \texttt{getInputs()} returns a list of \texttt{Input} objects; the method \texttt{getOutputs} returns a list of \texttt{Output} objects.
+	\item Complete the implementation of \texttt{getOutputAddresses()} in \texttt{Checkpoint1.java}. To get the Bitcoin address of an Output object, use method \texttt{getAddress()} in \texttt{Output.java}.
+	\item Complete the implementation of \texttt{getInputAddresses()} in \texttt{Checkpoint1.java}. To get the previous output of an Input object, use method \texttt{getPreviousOutput()} in \texttt{Input.java}.
+	\item Complete the implementation of \texttt{getLargestRcv()} in \texttt{Checkpoint1.java}. Hint: To get the number of Satoshi received by an Output object, use method \texttt{getValue()} in \texttt{Output.java}.
+	\item Complete the implementation of \texttt{getCoinbaseCount()} in \texttt{Checkpoint1.java}. In a coinbase transaction, there is a single input, and the input has no previous output (i.e., \texttt{getPreviousOutput() == null}).
+	\item Complete the implementation of \texttt{getSatoshiGen()} in \texttt{Checkpoint1.java}.
+	\item Compile and run the code with \texttt{compile.sh} and \texttt{run1.sh}. This will write the answers for all the questions in Checkpoint1 to a file named \texttt{cp1.txt}.
+\end{itemize}
+
+\paragraph{What to submit} 
+\begin{itemize}
+	\item \texttt{cp1.txt} \ \  The file generated by \texttt{Checkpoint1Test.java}.
+	\item Implementations for this section
+\end{itemize}
+
+\newpage
+
+\section{Checkpoint 2 (80 points)}
+\label{sec:checkpoint2}
+
+For this checkpoint, you'll need to query all the transactions on 10/25/2013, generate a user graph based on the transactions, and analyze the user graph. 
+
+\subsection{Genereate a Transaction Dataset (10 points)} \label{subsec:gen}
+Implement \texttt{DatasetGenerator.java} to generate a dataset for all the \textbf{non-coinbase} transactions on 10/25/2013. The dataset should have one record for each input or output in a transaction. Each record should have 5 fields: 
+\begin{itemize}
+	\item \texttt{txIndex} \ \ The index of the transaction \  \textit{Hint: Use method} \texttt{getIndex()} \textit{in} \texttt{Transaction.java}
+	\item \texttt{txHash} \ \ The hash of the transaction \  \textit{Hint: Use method} \texttt{getHash()} \textit{in} \texttt{Transaction.java}
+	\item \texttt{address}
+		\begin{itemize}
+			\item For an input record, this is the Bitcoin address of the previous output
+			\item For an output record, this is the Bitcoin address of the output
+		\end{itemize}
+	\item \texttt{value}
+		\begin{itemize}
+			\item For an input record, this is the value of the previous output
+			\item For an output record, this is the value of the output
+		\end{itemize}
+	\item \texttt{in/out} \ \ Indicate whether this is an input record or an output record
+\end{itemize}
+Use the method \texttt{generateInputRecord} and \texttt{generateOutputRecord} to generate each record in the dataset. After finishing your implementations, use \texttt{compile.sh} and \texttt{run\_gen.sh} to write the dataset to file \texttt{transactions.txt}. An example of the generated dataset is provided in \texttt{transactions\_eg.txt}. The example dataset contains all the non-coinbase transactions in the block we studied in \ref{subsec:Blocks}. 
+
+\paragraph{Tips}
+\begin{itemize}
+	\item The process of downloading the transactions may take a few seconds to a few minutes depending on the network bandwidth.
+	\item Please use \texttt{blockExplorer.getBlocksAtHeight()} to get blocks with height between \textbf{[265852, 266085]}. This contains all the blocks generated on 10/25/2013 UTC. Please do \textbf{NOT} use \texttt{blockExplorer.getBlocks(long timestamp)}. Although this method does return the blocks generated on a certain date, it returns at most 200 blocks, which is not a complete list of all the blocks.
+\end{itemize}
+
+\paragraph{What to submit} 
+\begin{itemize}
+	\item \texttt{transactions.txt} \ \  A dataset containing all the non-coinbase transactions on 10/25/2013, generated by \texttt{DatasetGeneratorTest.java}.
+	\item Implementations for this section
+\end{itemize}
+
+\subsection{Cluster Bitcoin Addresses (20 points)} \label{subsec:cluster}
+\textit{Joint control} is a common idiom used to cluster addresses. It assumes that addresses used as inputs to a common transaction are controlled by the same entity. Implement \texttt{UserCluster.java} to cluster Bitcoin addresses based on joint control, and assign a unique userId for each cluster of addresses. The \texttt{UserCluster} should have at least 2 attributes. \texttt{Map<Long, List<String>> userMap} maps a user id to a list of Bitcoin addresses, and \texttt{Map<String, Long> keyMap} maps a Bitcoin address to a user id. After finishing your implementations, use \texttt{compile.sh} and \texttt{run\_cluster.sh} to write \texttt{userMap} and \texttt{keyMap} to a file, generate the answers for the following questions, and generate a user graph file:
+\begin{enumerate}
+	\item How many users (number of clusters) do you get after clustering?
+	\item What is the size of the largest cluster? 
+\end{enumerate}
+ 
+\paragraph{Tips:}
+\begin{itemize}
+	\item To start with, implement method \texttt{readTransactions()} to read all the transactions in the dataset.
+	\item Implement method \texttt{mergeAddresses()} to merge addresses that are used as inputs to a common transaction, and store them in \texttt{userMap} and \texttt{keyMap}
+	\item Both \texttt{userMap} and \texttt{keyMap} should contain ALL Bitcoin addresses appeared in the inputs and outputs of non-coinbase transactions. 
+	\item Implement method \texttt{writeUserGraph()} to generate a user graph file based on transactions in the dataset. The file should contain the input userId, output userId, and value of transferred bitcoin (in Satoshi) for each output. \texttt{userGraph\_eg.txt} is an example of the user graph file. The structure of your user graph file can be different from the example. You can also include other additional information if you need. You will use this user graph file to do graph analysis in \ref{subsec:graph} 
+	\item You can use \texttt{transactions-test.txt} to test your clustering algorithm. Feel free to design other test cases by changing the transactions in \texttt{transactions-test.txt}.
+\end{itemize}
+
+\paragraph{What to submit} 
+\begin{itemize}
+	\item \texttt{cp2.txt} \ \ Answers for the questions.
+	\item \texttt{userMap.txt} \ \ A map from userId to Bitcoin addresses.
+	\item \texttt{keyMap.txt} \ \ A map from Bitcoin addresses to userId.
+	\item \texttt{userGraph.txt} \ \ The user transaction graph
+	\item Implementations for this section
+\end{itemize}
+
+\subsection{Analyze User Graph (10 points)} \label{subsec:graph}
+On 10/25/2013, FBI seized \$28.5 million in Bitcoins from Ross Ulbricht, alleged owner of silk road. The seizure is done with multiple transactions, which are recorded in the blockchain. Please find the Bitcoin address(es) that are controlled by FBI by analyzing the user graph you generated in \ref{subsec:cluster}. Then, find at least 3 Bitcoin addresses that you think might belong to an owner or a user of Silk Road based on your analysis. You can assume that it is unlikely for other users to receive a similar or larger amount of transactions in a single day. You can use search results from online Bitcoin explorers (e.g. \url{https://blockchain.info/}) to check whether your guess is correct. 
+
+To analyze the user graph, you can use open source graph APIs or your own implementations. Please include all your implementations and a \texttt{ReadMe.txt} file in your submission. The \texttt{ReadMe.txt} file should give detailed instructions on how to run your code.  
+
+\paragraph{What to submit}
+\begin{itemize}
+	\item \texttt{ReadMe.txt}
+	\item Implementations for this section
+\end{itemize}
+
+\subsection{Report (50 points)}
+Please write a 1-page report as follows: 
+\begin{itemize}
+	\item Put the names and netids of ALL the group members at the top of the report. (5 points)
+	\item Briefly describe the clustering algorithm you used in \ref{subsec:cluster}. (10 points)
+	\item Is the assumption of \textit{joint control} a valid assumption? Why or why not? Can you think of any false positives and false negatives for the clustering algorithm based on this assumption? (10 points)
+	\item What is the Bitcoin address controlled by FBI in \ref{subsec:graph}? Briefly describe the algorithm you used to identify this address. (15 points)
+	\item List at least 3 Bitcoin addresses that you think might belong to an owner or a user of Silk Road based on your analysis. Why do you think so? (This is an open-ended question. There is no "correct" answer for it. Be creative and try to propose strong arguments for your guess.) (10 points)
+\end{itemize}
+
+Please name the report as \texttt{report\_[netid1]\_[nedid2]\_[netid3].pdf}.
+
+\paragraph{What to submit} \label{para: submit}
+\begin{itemize}
+	\item \texttt{report\_[netid1]\_[nedid2]\_[netid3].pdf}
+\end{itemize} 
+
+\section*{Submission Checklist} \label{para:submission}
+Place the following files in \texttt{mp3} in your subversion repository. 
+
+\medskip
+
+\begin{itemize}
+	
+	\item \texttt{report\_[netid1]\_[nedid2]\_[netid3].pdf} \ \ [Report for Section~\ref{sec:checkpoint2}] 
+	\item \texttt{ReadMe.txt} \ \ [\ref{subsec:graph}]
+	\item \texttt{cp2.txt} \ \ [Answers for the questions in \ref{subsec:cluster}]
+	\item \texttt{userMap.txt} \ \ [A map from userId to Bitcoin addresses in \ref{subsec:cluster}]
+	\item \texttt{keyMap.txt} \ \ [A map from Bitcoin addresses to userId in \ref{subsec:cluster}]
+	\item \texttt{userGraph.txt} \ \ [The user transaction graph in \ref{subsec:cluster}]
+	\item \texttt{transactions.txt} \ \  [A dataset containing all the non-coinbase transactions on 10/25/2013, generated by \texttt{DatasetGeneratorTest.java}]
+	\item \texttt{cp1.txt} \ \  [The file generated by \texttt{Checkpoint1Test.java}]
+	\item \texttt{src} \ \ [Implementations for both checkpoints]
+	\item \texttt{lib} \ \ [Libraries]
+	\item \texttt{bin} \ \ [Compiled java classes]
+	\item \texttt{compile.sh} \ \ [Provided compilation script]
+	\item \texttt{run1.sh} \ \ [Provided script for checkpoint1]
+	\item \texttt{run\_gen.sh} \ \ [Provided script for \ref{subsec:gen}]
+	\item \texttt{run\_cluster.sh} \ \ [Provided script for \ref{subsec:cluster}]
+\end{itemize}
+
+\end{document}
+
+
+ 
